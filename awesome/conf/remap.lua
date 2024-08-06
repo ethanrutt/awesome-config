@@ -152,7 +152,7 @@ globalkeys = gears.table.join(
                 "firefox --profile ~/.mozilla/firefox/1uleydxc.default-release/"
             )
         end,
-        { description = "launch default firefox profile" }
+        { description = "launch default firefox profile", group = "launcher" }
     ),
     awful.key(
         { altmod, },
@@ -162,7 +162,7 @@ globalkeys = gears.table.join(
                 "firefox --profile ~/.mozilla/firefox/0l50ru11.tamu/"
             )
         end,
-        { description = "launch tamu firefox profile" }
+        { description = "launch tamu firefox profile", group = "launcher" }
     ),
     awful.key(
         { altmod, },
