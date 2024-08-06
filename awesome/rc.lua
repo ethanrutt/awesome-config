@@ -34,7 +34,7 @@ end
 -- }}}
 
 -- Themes define colours, icons, font and wallpapers.
-local theme = "minimal"
+local theme = "arch"
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. theme .. "/theme.lua")
 
