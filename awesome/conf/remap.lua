@@ -145,7 +145,7 @@ globalkeys = gears.table.join(
         { description = "show windows", group = "rofi" }
     ),
     awful.key(
-        { altmod, "shift"},
+        { altmod, "Shift"},
         "s",
         function()
             awful.spawn.with_shell("shotgun")
