@@ -1,12 +1,31 @@
 local gears = require("gears")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local beautiful = require("beautiful")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
 modkey = "Mod1"
 altmod = "Mod4"
+
+local get_current_sink = function()
+    local handle = io.popen("pacmd list-sinks | grep '*' | awk '{print $3}'")
+    if handle ~= nil then
+        local sink = handle:read("*a")
+
+        -- trim
+        return sink:gsub("%s+", "")
+    else
+        require('naughty').notify({
+            title = "sink error",
+            bg = "#FF0000",
+            text = "unable to determine sink"
+        })
+        return nil
+    end
+end
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -183,6 +202,80 @@ globalkeys = gears.table.join(
         "6",
         function() awful.spawn("spotify-launcher") end,
         { description = "start spotify", group = "launcher" }
+    ),
+
+    -- media
+    awful.key(
+        {},
+        "XF86AudioRaiseVolume",
+        function()
+            local sink = get_current_sink()
+            if sink ~= nil then
+                os.execute(string.format("pactl set-sink-volume %s +5%%", sink))
+
+                -- check theme.lua, I put a margin and background widget on top
+                -- of the soundbar widget from lain which explains the
+                -- children[1] calls
+                beautiful.soundbar_widget.children[1].children[1].update()
+            end
+        end,
+        { description = "raise volume", group = "media" }
+    ),
+    awful.key(
+        {},
+        "XF86AudioLowerVolume",
+        function()
+            local sink = get_current_sink()
+            if sink ~= nil then
+                os.execute(string.format("pactl set-sink-volume %s -5%%", sink))
+
+                -- check theme.lua, I put a margin and background widget on top
+                -- of the soundbar widget from lain which explains the
+                -- children[1] calls
+                beautiful.soundbar_widget.children[1].children[1].update()
+            end
+        end,
+        { description = "lower volume", group = "media" }
+    ),
+    awful.key(
+        {},
+        "XF86AudioMute",
+        function()
+            local sink = get_current_sink()
+            if sink ~= nil then
+                os.execute(string.format("pactl set-sink-mute %s toggle", sink))
+
+                -- check theme.lua, I put a margin and background widget on top
+                -- of the soundbar widget from lain which explains the
+                -- children[1] calls
+                beautiful.soundbar_widget.children[1].children[1].update()
+            end
+        end,
+        { description = "mute volume", group = "media" }
+    ),
+    awful.key(
+        {},
+        "XF86AudioPlay",
+        function()
+            awful.spawn("playerctl play-pause")
+        end,
+        { description = "toggle play/pause", group = "media" }
+    ),
+    awful.key(
+        {},
+        "XF86AudioNext",
+        function()
+            awful.spawn("playerctl next")
+        end,
+        { description = "skip to next media", group = "media" }
+    ),
+    awful.key(
+        {},
+        "XF86AudioPrev",
+        function()
+            awful.spawn("playerctl previous")
+        end,
+        { description = "rewind to previous media", group = "media" }
     )
 )
 
