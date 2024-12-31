@@ -161,6 +161,9 @@ soundbar_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_b
 soundbar_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
 theme.soundbar_widget = utils.create_margin_widget(soundbar_bg, theme.margin_size)
 
+local taglist_buttons = gears.table.join(
+    awful.button({}, 1, function(t) t:view_only() end)
+)
 
 function theme.at_screen_connect(s)
     -- Each screen has its own tag table.
@@ -170,7 +173,7 @@ function theme.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = awful.util.taglist_buttons,
+        buttons = taglist_buttons
     }
 
     -- Create the wibox
