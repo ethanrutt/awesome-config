@@ -93,12 +93,6 @@ globalkeys = gears.table.join(
 
     -- Standard program
     awful.key(
-        { altmod, },
-        "3",
-        function() awful.spawn(terminal) end,
-        { description = "open a terminal", group = "launcher" }
-    ),
-    awful.key(
         { modkey, "Shift" },
         "r",
         awesome.restart,
@@ -145,12 +139,12 @@ globalkeys = gears.table.join(
         { description = "show windows", group = "rofi" }
     ),
     awful.key(
-        { altmod, "Shift"},
+        { altmod, "Shift" },
         "s",
         function()
             awful.spawn.with_shell("shotgun")
         end,
-        { description = "take a screen shot with shotgun", group = "launcher"}
+        { description = "take a screen shot with shotgun", group = "launcher" }
     ),
     awful.key(
         { altmod, },
@@ -171,6 +165,12 @@ globalkeys = gears.table.join(
             )
         end,
         { description = "launch tamu firefox profile", group = "launcher" }
+    ),
+    awful.key(
+        { altmod, },
+        "3",
+        function() awful.spawn(terminal) end,
+        { description = "open a terminal", group = "launcher" }
     ),
     awful.key(
         { altmod, },
