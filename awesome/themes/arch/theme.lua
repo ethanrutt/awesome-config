@@ -175,7 +175,7 @@ function theme.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
+        buttons = taglist_buttons,
     }
 
     -- Create the wibox
@@ -191,20 +191,20 @@ function theme.at_screen_connect(s)
         {
             layout = wibox.layout.fixed.horizontal,
             theme.archlogo,
-            utils.create_margin_widget(s.mytaglist, theme.margin_size)
+            utils.create_margin_widget(s.mytaglist, theme.margin_size),
         },
         {
             layout = wibox.layout.flex.horizontal,
             theme.space,
             theme.textclock,
-            theme.space
+            theme.space,
         },
         {
             layout = wibox.layout.fixed.horizontal,
             theme.cpu_usage,
             theme.mem_usage,
             theme.soundbar_widget,
-            theme.systray
+            theme.systray,
         }
     })
 end
