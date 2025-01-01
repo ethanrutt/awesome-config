@@ -7,7 +7,7 @@ local lain = require("lain")
 
 local arch_blue = "#1793d0"
 local mint_green = "#daffed"
-local indigo = "#4a0d67"
+local purple = "#d88aff"
 local black = "#242c2e"
 local white = "#dddddd"
 
@@ -19,15 +19,14 @@ theme.selected_bg = arch_blue
 theme.large_widget_bg = white
 
 theme.font = "AgaveNerdFont 10"
-theme.useless_gap = 5
 
 theme.bg_normal = white
 theme.bg_focus = arch_blue
 theme.bg_subtle = mint_green
-theme.bg_urgent = indigo
+theme.bg_urgent = purple
 theme.bg_minimize = arch_blue
 theme.bg_dark = arch_blue
-theme.bg_systray = mint_green
+theme.bg_systray = arch_blue
 
 theme.fg_normal = black
 theme.fg_focus = white
@@ -37,8 +36,8 @@ theme.fg_minimize = white
 theme.useless_gap = 5
 theme.border_width = dpi(3)
 theme.border_focus = mint_green
-theme.border_normal = indigo
-theme.border_marked = indigo
+theme.border_normal = purple
+theme.border_marked = purple
 
 theme.wibar_bg = black
 
@@ -46,11 +45,11 @@ theme.taglist_font = "AgaveNerdFont 10"
 theme.taglist_fg_focus = white
 theme.taglist_fg_normal = black
 theme.taglist_bg_focus = arch_blue
-theme.taglist_bg_urgent = indigo
+theme.taglist_bg_urgent = purple
 theme.taglist_bg_empty = white
 theme.taglist_bg_occupied = white
 theme.taglist_spacing = 2
-theme.taglist_shape = gears.shape.rounded_rect
+theme.taglist_shape = gears.shape.circle
 
 theme.margin_size = 4
 
@@ -69,7 +68,7 @@ local tc = wibox.widget.textclock("   %a %b %d   %I:%M %p ")
 tc.font = theme.font
 tc.valign = "center"
 tc.align = "center"
-theme.textclock = utils.create_widget(tc, theme.default_bg, theme.taglist_shape, theme.margin_size)
+theme.textclock = utils.create_widget(tc, theme.default_bg, gears.shape.rounded_bar, theme.margin_size)
 
 local al = wibox.widget {
     image  = gears.filesystem.get_configuration_dir() .. "icons/" .. "archlinux-icon.svg",
@@ -83,7 +82,7 @@ local cpu = lain.widget.cpu {
     end
 }
 cpu.widget.font = theme.font
-theme.cpu_usage = utils.create_widget(cpu.widget, theme.default_bg, theme.taglist_shape, theme.margin_size)
+theme.cpu_usage = utils.create_widget(cpu.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
 
 local mem = lain.widget.mem {
     settings = function()
@@ -91,7 +90,7 @@ local mem = lain.widget.mem {
     end
 }
 mem.widget.font = theme.font
-theme.mem_usage = utils.create_widget(mem.widget, theme.default_bg, theme.taglist_shape, theme.margin_size)
+theme.mem_usage = utils.create_widget(mem.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
 
 local soundbar = lain.widget.pulse {
     settings = function()
@@ -155,11 +154,14 @@ local soundbar_bg = wibox.widget({
     soundbar,
     widget = wibox.container.background,
     bg = theme.default_bg,
-    shape = gears.shape.rounded_rect,
 })
 soundbar_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
 soundbar_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
 theme.soundbar_widget = utils.create_margin_widget(soundbar_bg, theme.margin_size)
+
+-- systray shape is unable to be changed with the background widget, the
+-- background is set in theme.bg_systray
+theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_size)
 
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end)
@@ -202,6 +204,7 @@ function theme.at_screen_connect(s)
             theme.cpu_usage,
             theme.mem_usage,
             theme.soundbar_widget,
+            theme.systray
         }
     })
 end
