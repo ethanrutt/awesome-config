@@ -76,23 +76,7 @@ local al = wibox.widget {
 }
 theme.archlogo = utils.create_margin_widget(al, theme.margin_size)
 
-local cpu = lain.widget.cpu {
-    settings = function()
-        widget:set_markup("   | " .. cpu_now.usage .. "% ")
-    end
-}
-cpu.widget.font = theme.font
-theme.cpu_usage = utils.create_widget(cpu.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
-
-local mem = lain.widget.mem {
-    settings = function()
-        widget:set_markup("   | " .. mem_now.perc .. "% ")
-    end
-}
-mem.widget.font = theme.font
-theme.mem_usage = utils.create_widget(mem.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
-
-local soundbar = lain.widget.pulse {
+local soundbar = lain.widget.pulse({
     settings = function()
         local vlevel = ""
         local number_string = string.gsub(volume_now.left, "%%", "")
@@ -109,7 +93,7 @@ local soundbar = lain.widget.pulse {
         vlevel = vlevel .. " | " .. volume_now.left .. " % "
         widget:set_markup(lain.util.markup(theme.wibar_bg, vlevel))
     end
-}
+})
 soundbar.widget.font = theme.font
 soundbar.widget:buttons(awful.util.table.join(
     awful.button(
@@ -159,6 +143,70 @@ soundbar_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_b
 soundbar_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
 theme.soundbar_widget = utils.create_margin_widget(soundbar_bg, theme.margin_size)
 
+local wifi_icon = wibox.widget.textbox()
+local eth_icon = wibox.widget.textbox()
+local net = lain.widget.net({
+    notify = "off",
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        local eth0 = net_now.devices.eth0
+        if eth0 then
+            if eth0.ethernet then
+                eth_icon.text = " 󰈁 "
+            else
+                eth_icon.text = ""
+            end
+        end
+
+        local wlan0 = net_now.devices.wlan0
+        if wlan0 then
+            if wlan0.wifi then
+                local signal = wlan0.signal
+                if signal < -83 then
+                    wifi_icon.text = " 󰤟  "
+                elseif signal < -70 then
+                    wifi_icon.text = " 󰤢  "
+                elseif signal < -53 then
+                    wifi_icon.text = " 󰤥  "
+                elseif signal >= -53 then
+                    wifi_icon.text = " 󰤨  "
+                end
+            else
+                wifi_icon.text = " 󰤯  "
+            end
+        end
+    end
+})
+
+local wifi_bg = utils.create_bg_widget(wifi_icon, theme.default_bg, gears.shape.rectangle)
+wifi_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
+wifi_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
+wifi_bg:buttons(gears.table.join(
+    awful.button(
+        {},
+        1,
+        function()
+            awful.spawn("nm-connection-editor")
+        end
+    )
+))
+theme.wifi = utils.create_margin_widget(wifi_bg, theme.margin_size)
+
+local eth_bg = utils.create_bg_widget(eth_icon, theme.default_bg, gears.shape.rectangle)
+eth_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
+eth_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
+eth_bg:buttons(gears.table.join(
+    awful.button(
+        {},
+        1,
+        function()
+            awful.spawn("nm-connection-editor")
+        end
+    )
+))
+theme.eth = utils.create_margin_widget(eth_bg, theme.margin_size)
+
 -- systray shape is unable to be changed with the background widget, the
 -- background is set in theme.bg_systray
 theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_size)
@@ -172,11 +220,11 @@ function theme.at_screen_connect(s)
     awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 " }, s, awful.layout.layouts[1])
 
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist {
+    s.mytaglist = awful.widget.taglist({
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
         buttons = taglist_buttons,
-    }
+    })
 
     -- Create the wibox
     s.mywibox = awful.wibar({
@@ -201,8 +249,8 @@ function theme.at_screen_connect(s)
         },
         {
             layout = wibox.layout.fixed.horizontal,
-            theme.cpu_usage,
-            theme.mem_usage,
+            theme.eth,
+            theme.wifi,
             theme.soundbar_widget,
             theme.systray,
         }

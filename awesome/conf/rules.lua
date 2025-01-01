@@ -62,10 +62,10 @@ awful.rules.rules = {
         properties = { titlebars_enabled = true }
     },
 
-    -- pavucontrol always small at center
+    -- pavucontrol and nm-connection-editor always small at center
     {
         rule_any = {
-            instance = { "pavucontrol" }
+            instance = { "pavucontrol", "nm-connection-editor" }
         },
         properties = { width = 800, height = 700, floating = true, x = 550, y = 200 }
     }
