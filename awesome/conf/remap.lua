@@ -194,7 +194,7 @@ globalkeys = gears.table.join(
         function()
             awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
                 local sink = s:gsub("%s+", "")
-                os.execute(string.format("pactl set-sink-volume %s +5%%", sink))
+                awful.spawn(string.format("pactl set-sink-volume %s +5%%", sink))
                 beautiful.soundbar_widget.update()
             end)
         end,
@@ -206,7 +206,7 @@ globalkeys = gears.table.join(
         function()
             awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
                 local sink = s:gsub("%s+", "")
-                os.execute(string.format("pactl set-sink-volume %s -5%%", sink))
+                awful.spawn(string.format("pactl set-sink-volume %s -5%%", sink))
                 beautiful.soundbar_widget.update()
             end)
         end,
@@ -218,7 +218,7 @@ globalkeys = gears.table.join(
         function()
             awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
                 local sink = s:gsub("%s+", "")
-                os.execute(string.format("pactl set-sink-mute %s toggle", sink))
+                awful.spawn(string.format("pactl set-sink-mute %s toggle", sink))
                 beautiful.soundbar_widget.update()
             end)
         end,

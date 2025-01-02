@@ -35,7 +35,7 @@ local create = function(bg, selected_bg, shape, margin, font)
             {},
             2, -- middle click
             function()
-                os.execute(string.format("pactl set-sink-volume %s 100%%", soundbar.device))
+                awful.spawn(string.format("pactl set-sink-volume %s 100%%", soundbar.device))
                 soundbar.update()
             end
         ),
@@ -43,7 +43,7 @@ local create = function(bg, selected_bg, shape, margin, font)
             {},
             3, -- right click
             function()
-                os.execute(string.format("pactl set-sink-mute %s toggle", soundbar.device))
+                awful.spawn(string.format("pactl set-sink-mute %s toggle", soundbar.device))
                 soundbar.update()
             end
         ),
@@ -51,7 +51,7 @@ local create = function(bg, selected_bg, shape, margin, font)
             {},
             4, -- scroll up
             function()
-                os.execute(string.format("pactl set-sink-volume %s +1%%", soundbar.device))
+                awful.spawn(string.format("pactl set-sink-volume %s +1%%", soundbar.device))
                 soundbar.update()
             end
         ),
@@ -59,7 +59,7 @@ local create = function(bg, selected_bg, shape, margin, font)
             {},
             5, -- scroll down
             function()
-                os.execute(string.format("pactl set-sink-volume %s -1%%", soundbar.device))
+                awful.spawn(string.format("pactl set-sink-volume %s -1%%", soundbar.device))
                 soundbar.update()
             end
         )
