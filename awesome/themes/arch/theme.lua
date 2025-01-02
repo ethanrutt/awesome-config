@@ -164,7 +164,10 @@ local net = lain.widget.net({
         if wlan0 then
             if wlan0.wifi then
                 local signal = wlan0.signal
-                if signal < -83 then
+                if signal == nil then
+                    wifi_icon.text = " 󰤮  "
+                    wifi_icon.visible = true
+                elseif signal < -83 then
                     wifi_icon.text = " 󰤟  "
                     wifi_icon.visible = true
                 elseif signal < -70 then
@@ -178,7 +181,6 @@ local net = lain.widget.net({
                     wifi_icon.visible = true
                 end
             else
-                wifi_icon.text = " 󰤯  "
                 wifi_icon.visible = false
             end
         end
