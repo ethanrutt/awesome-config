@@ -1,9 +1,8 @@
-local utils = require("widget_utils")
+local utils = require("utils.widget_utils")
 local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
 
 local arch_blue = "#1793d0"
 local mint_green = "#daffed"
@@ -68,7 +67,12 @@ local tc = wibox.widget.textclock("   %a %b %d   %I:%M %p ")
 tc.font = theme.font
 tc.valign = "center"
 tc.align = "center"
-theme.textclock = utils.create_widget(tc, theme.default_bg, gears.shape.rounded_bar, theme.margin_size)
+theme.textclock = utils.create_widget(
+    tc,
+    theme.default_bg,
+    gears.shape.rounded_bar,
+    theme.margin_size
+)
 
 local al = wibox.widget {
     image  = gears.filesystem.get_configuration_dir() .. "icons/" .. "archlinux-icon.svg",
@@ -76,7 +80,7 @@ local al = wibox.widget {
 }
 theme.archlogo = utils.create_margin_widget(al, theme.margin_size)
 
-local soundbar = lain.widget.pulse({
+local soundbar = require("widgets.pulse")({
     settings = function()
         local vlevel = ""
         local number_string = string.gsub(volume_now.left, "%%", "")
@@ -91,7 +95,7 @@ local soundbar = lain.widget.pulse({
         end
 
         vlevel = vlevel .. " | " .. volume_now.left .. " % "
-        widget:set_markup(lain.util.markup(theme.wibar_bg, vlevel))
+        widget:set_markup(require("utils.markup")(theme.wibar_bg, vlevel))
     end
 })
 soundbar.widget.font = theme.font
@@ -146,7 +150,7 @@ theme.soundbar_widget.update = soundbar.update
 
 local wifi_icon = wibox.widget.textbox()
 local eth_icon = wibox.widget.textbox()
-local net = lain.widget.net({
+local net = require("widgets.net")({
     notify = "off",
     wifi_state = "on",
     eth_state = "on",
@@ -187,21 +191,30 @@ local net = lain.widget.net({
         end
     end
 })
-
-theme.wifi = utils.create_widget(wifi_icon, theme.default_bg, gears.shape.rectangle, theme.margin_size)
-theme.eth = utils.create_widget(eth_icon, theme.default_bg, gears.shape.rectangle, theme.margin_size)
+theme.wifi = utils.create_widget(
+    wifi_icon,
+    theme.default_bg,
+    gears.shape.rectangle,
+    theme.margin_size
+)
+theme.eth = utils.create_widget(
+    eth_icon,
+    theme.default_bg,
+    gears.shape.rectangle,
+    theme.margin_size
+)
 
 -- systray shape is unable to be changed with the background widget, the
 -- background is set in theme.bg_systray
 theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_size)
 
-local currently_playing = require("current_audio_widget")({
+local currently_playing = require("widgets.current_audio_widget")({
     settings = function()
         local status = ""
         if cp_metadata.status == "Playing" then
-            status = "   "
+            status = "  "
         else
-            status = "   "
+            status = "  "
         end
 
         local player = ""
@@ -218,8 +231,12 @@ local currently_playing = require("current_audio_widget")({
         widget.text = status .. player .. cp_metadata.artist_and_track
     end
 })
-theme.currently_playing = utils.create_widget(currently_playing.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
-
+theme.currently_playing = utils.create_widget(
+    currently_playing.widget,
+    theme.default_bg,
+    gears.shape.rectangle,
+    theme.margin_size
+)
 theme.currently_playing.update = currently_playing.update
 
 local taglist_buttons = gears.table.join(

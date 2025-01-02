@@ -1,10 +1,11 @@
 --[[
 
     Base took from lain awesomewm widgets
+    https://github.com/lcpz/lain/
 
 --]]
 
-local helpers = require("lain.helpers")
+local helpers = require("utils.helpers")
 local shell   = require("awful.util").shell
 local wibox   = require("wibox")
 local string  = string
