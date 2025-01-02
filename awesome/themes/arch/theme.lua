@@ -154,8 +154,9 @@ local net = lain.widget.net({
         if eth0 then
             if eth0.ethernet then
                 eth_icon.text = " 󰈁 "
+                eth_icon.visible = true
             else
-                eth_icon.text = ""
+                eth_icon.visible = false
             end
         end
 
@@ -165,47 +166,27 @@ local net = lain.widget.net({
                 local signal = wlan0.signal
                 if signal < -83 then
                     wifi_icon.text = " 󰤟  "
+                    wifi_icon.visible = true
                 elseif signal < -70 then
                     wifi_icon.text = " 󰤢  "
+                    wifi_icon.visible = true
                 elseif signal < -53 then
                     wifi_icon.text = " 󰤥  "
+                    wifi_icon.visible = true
                 elseif signal >= -53 then
                     wifi_icon.text = " 󰤨  "
+                    wifi_icon.visible = true
                 end
             else
                 wifi_icon.text = " 󰤯  "
+                wifi_icon.visible = false
             end
         end
     end
 })
 
-local wifi_bg = utils.create_bg_widget(wifi_icon, theme.default_bg, gears.shape.rectangle)
-wifi_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
-wifi_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
-wifi_bg:buttons(gears.table.join(
-    awful.button(
-        {},
-        1,
-        function()
-            awful.spawn("nm-connection-editor")
-        end
-    )
-))
-theme.wifi = utils.create_margin_widget(wifi_bg, theme.margin_size)
-
-local eth_bg = utils.create_bg_widget(eth_icon, theme.default_bg, gears.shape.rectangle)
-eth_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
-eth_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
-eth_bg:buttons(gears.table.join(
-    awful.button(
-        {},
-        1,
-        function()
-            awful.spawn("nm-connection-editor")
-        end
-    )
-))
-theme.eth = utils.create_margin_widget(eth_bg, theme.margin_size)
+theme.wifi = utils.create_widget(wifi_icon, theme.default_bg, gears.shape.rectangle, theme.margin_size)
+theme.eth = utils.create_widget(eth_icon, theme.default_bg, gears.shape.rectangle, theme.margin_size)
 
 -- systray shape is unable to be changed with the background widget, the
 -- background is set in theme.bg_systray
