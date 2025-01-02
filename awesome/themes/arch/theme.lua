@@ -80,164 +80,31 @@ local al = wibox.widget {
 }
 theme.archlogo = utils.create_margin_widget(al, theme.margin_size)
 
-local soundbar = require("widgets.pulse")({
-    settings = function()
-        local vlevel = ""
-        local number_string = string.gsub(volume_now.left, "%%", "")
-        local vol = tonumber(number_string)
+theme.soundbar_widget = require("widgets.soundbar")(
+    theme.default_bg,
+    theme.selected_bg,
+    gears.shape.rectangle,
+    theme.margin_size,
+    theme.font
+)
 
-        if volume_now.muted == "yes" then
-            vlevel = "  "
-        elseif vol < 50 then
-            vlevel = "  "
-        else
-            vlevel = "  "
-        end
-
-        vlevel = vlevel .. " | " .. volume_now.left .. " % "
-        widget:set_markup(require("utils.markup")(theme.wibar_bg, vlevel))
-    end
-})
-soundbar.widget.font = theme.font
-soundbar.widget:buttons(awful.util.table.join(
-    awful.button(
-        {},
-        1, -- left click
-        function() awful.spawn("pavucontrol") end
-    ),
-    awful.button(
-        {},
-        2, -- middle click
-        function()
-            os.execute(string.format("pactl set-sink-volume %s 100%%", soundbar.device))
-            soundbar.update()
-        end
-    ),
-    awful.button(
-        {},
-        3, -- right click
-        function()
-            os.execute(string.format("pactl set-sink-mute %s toggle", soundbar.device))
-            soundbar.update()
-        end
-    ),
-    awful.button(
-        {},
-        4, -- scroll up
-        function()
-            os.execute(string.format("pactl set-sink-volume %s +1%%", soundbar.device))
-            soundbar.update()
-        end
-    ),
-    awful.button(
-        {},
-        5, -- scroll down
-        function()
-            os.execute(string.format("pactl set-sink-volume %s -1%%", soundbar.device))
-            soundbar.update()
-        end
-    )
-))
-local soundbar_bg = wibox.widget({
-    soundbar,
-    widget = wibox.container.background,
-    bg = theme.default_bg,
-})
-soundbar_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
-soundbar_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
-theme.soundbar_widget = utils.create_margin_widget(soundbar_bg, theme.margin_size)
-theme.soundbar_widget.update = soundbar.update
-
-local wifi_icon = wibox.widget.textbox()
-local eth_icon = wibox.widget.textbox()
-local net = require("widgets.net")({
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-        local eth0 = net_now.devices.eth0
-        if eth0 then
-            if eth0.ethernet then
-                eth_icon.text = " 󰈁 "
-                eth_icon.visible = true
-            else
-                eth_icon.visible = false
-            end
-        end
-
-        local wlan0 = net_now.devices.wlan0
-        if wlan0 then
-            if wlan0.wifi then
-                local signal = wlan0.signal
-                if signal == nil then
-                    wifi_icon.text = " 󰤮  "
-                    wifi_icon.visible = true
-                elseif signal < -83 then
-                    wifi_icon.text = " 󰤟  "
-                    wifi_icon.visible = true
-                elseif signal < -70 then
-                    wifi_icon.text = " 󰤢  "
-                    wifi_icon.visible = true
-                elseif signal < -53 then
-                    wifi_icon.text = " 󰤥  "
-                    wifi_icon.visible = true
-                elseif signal >= -53 then
-                    wifi_icon.text = " 󰤨  "
-                    wifi_icon.visible = true
-                end
-            else
-                wifi_icon.visible = false
-            end
-        end
-    end
-})
-theme.wifi = utils.create_widget(
-    wifi_icon,
+local wifi_and_eth = require("widgets.net")(
     theme.default_bg,
     gears.shape.rectangle,
     theme.margin_size
 )
-theme.eth = utils.create_widget(
-    eth_icon,
-    theme.default_bg,
-    gears.shape.rectangle,
-    theme.margin_size
-)
+theme.eth = wifi_and_eth.eth
+theme.wifi = wifi_and_eth.wifi
 
 -- systray shape is unable to be changed with the background widget, the
 -- background is set in theme.bg_systray
 theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_size)
 
-local currently_playing = require("widgets.current_audio_widget")({
-    settings = function()
-        local status = ""
-        if cp_metadata.status == "Playing" then
-            status = "  "
-        else
-            status = "  "
-        end
-
-        local player = ""
-        if cp_metadata.player == "firefox" then
-            player = "   "
-        elseif cp_metadata.player == "spotify" then
-            player = "    "
-        elseif cp_metadata.player == "vlc" then
-            player = " 󰕼  "
-        else
-            player = "   "
-        end
-
-        widget.text = status .. player .. cp_metadata.artist_and_track
-    end
-})
-theme.currently_playing = utils.create_widget(
-    currently_playing.widget,
+theme.currently_playing = require("widgets.currently_playing")(
     theme.default_bg,
     gears.shape.rectangle,
     theme.margin_size
 )
-theme.currently_playing.update = currently_playing.update
 
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end)
