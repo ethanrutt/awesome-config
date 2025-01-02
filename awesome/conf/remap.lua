@@ -10,23 +10,6 @@ require("awful.hotkeys_popup.keys")
 modkey = "Mod1"
 altmod = "Mod4"
 
-local get_current_sink = function()
-    local handle = io.popen("pacmd list-sinks | grep '*' | awk '{print $3}'")
-    if handle ~= nil then
-        local sink = handle:read("*a")
-
-        -- trim
-        return sink:gsub("%s+", "")
-    else
-        require('naughty').notify({
-            title = "sink error",
-            bg = "#FF0000",
-            text = "unable to determine sink"
-        })
-        return nil
-    end
-end
-
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
     awful.button({}, 3, function() mymainmenu:toggle() end)
@@ -209,15 +192,11 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioRaiseVolume",
         function()
-            local sink = get_current_sink()
-            if sink ~= nil then
+            awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
+                local sink = s:gsub("%s+", "")
                 os.execute(string.format("pactl set-sink-volume %s +5%%", sink))
-
-                -- check theme.lua, I put a margin and background widget on top
-                -- of the soundbar widget from lain which explains the
-                -- children[1] calls
-                beautiful.soundbar_widget.children[1].children[1].update()
-            end
+                beautiful.soundbar_widget.update()
+            end)
         end,
         { description = "raise volume", group = "media" }
     ),
@@ -225,15 +204,11 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioLowerVolume",
         function()
-            local sink = get_current_sink()
-            if sink ~= nil then
+            awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
+                local sink = s:gsub("%s+", "")
                 os.execute(string.format("pactl set-sink-volume %s -5%%", sink))
-
-                -- check theme.lua, I put a margin and background widget on top
-                -- of the soundbar widget from lain which explains the
-                -- children[1] calls
-                beautiful.soundbar_widget.children[1].children[1].update()
-            end
+                beautiful.soundbar_widget.update()
+            end)
         end,
         { description = "lower volume", group = "media" }
     ),
@@ -241,15 +216,11 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioMute",
         function()
-            local sink = get_current_sink()
-            if sink ~= nil then
+            awful.spawn.easy_async_with_shell("pacmd list-sinks | grep '*' | awk '{print $3}'", function(s)
+                local sink = s:gsub("%s+", "")
                 os.execute(string.format("pactl set-sink-mute %s toggle", sink))
-
-                -- check theme.lua, I put a margin and background widget on top
-                -- of the soundbar widget from lain which explains the
-                -- children[1] calls
-                beautiful.soundbar_widget.children[1].children[1].update()
-            end
+                beautiful.soundbar_widget.update()
+            end)
         end,
         { description = "mute volume", group = "media" }
     ),
@@ -257,7 +228,9 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioPlay",
         function()
-            awful.spawn("playerctl play-pause")
+            awful.spawn.easy_async("playerctl play-pause", function(s, e, r, c)
+                beautiful.currently_playing.update()
+            end)
         end,
         { description = "toggle play/pause", group = "media" }
     ),
@@ -265,7 +238,9 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioNext",
         function()
-            awful.spawn("playerctl next")
+            awful.spawn.easy_async("playerctl next", function(s)
+                beautiful.currently_playing.update()
+            end)
         end,
         { description = "skip to next media", group = "media" }
     ),
@@ -273,7 +248,9 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioPrev",
         function()
-            awful.spawn("playerctl previous")
+            awful.spawn.easy_async("playerctl previous", function(s)
+                beautiful.currently_playing.update()
+            end)
         end,
         { description = "rewind to previous media", group = "media" }
     )

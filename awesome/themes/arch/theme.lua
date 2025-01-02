@@ -142,6 +142,7 @@ local soundbar_bg = wibox.widget({
 soundbar_bg:connect_signal("mouse::enter", function(c) c:set_bg(theme.selected_bg) end)
 soundbar_bg:connect_signal("mouse::leave", function(c) c:set_bg(theme.default_bg) end)
 theme.soundbar_widget = utils.create_margin_widget(soundbar_bg, theme.margin_size)
+theme.soundbar_widget.update = soundbar.update
 
 local wifi_icon = wibox.widget.textbox()
 local eth_icon = wibox.widget.textbox()
@@ -194,6 +195,33 @@ theme.eth = utils.create_widget(eth_icon, theme.default_bg, gears.shape.rectangl
 -- background is set in theme.bg_systray
 theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_size)
 
+local currently_playing = require("current_audio_widget")({
+    settings = function()
+        local status = ""
+        if cp_metadata.status == "Playing" then
+            status = "   "
+        else
+            status = "   "
+        end
+
+        local player = ""
+        if cp_metadata.player == "firefox" then
+            player = "   "
+        elseif cp_metadata.player == "spotify" then
+            player = "    "
+        elseif cp_metadata.player == "vlc" then
+            player = " 󰕼  "
+        else
+            player = "   "
+        end
+
+        widget.text = status .. player .. cp_metadata.artist_and_track
+    end
+})
+theme.currently_playing = utils.create_widget(currently_playing.widget, theme.default_bg, gears.shape.rectangle, theme.margin_size)
+
+theme.currently_playing.update = currently_playing.update
+
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end)
 )
@@ -235,6 +263,7 @@ function theme.at_screen_connect(s)
             theme.eth,
             theme.wifi,
             theme.soundbar_widget,
+            theme.currently_playing,
             theme.systray,
         }
     })
