@@ -228,9 +228,7 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioPlay",
         function()
-            awful.spawn.easy_async("playerctl play-pause", function(s, e, r, c)
-                beautiful.currently_playing.update()
-            end)
+            awful.spawn("playerctl play-pause")
         end,
         { description = "toggle play/pause", group = "media" }
     ),
@@ -238,9 +236,7 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioNext",
         function()
-            awful.spawn.easy_async("playerctl next", function(s)
-                beautiful.currently_playing.update()
-            end)
+            awful.spawn("playerctl next")
         end,
         { description = "skip to next media", group = "media" }
     ),
@@ -248,9 +244,7 @@ globalkeys = gears.table.join(
         {},
         "XF86AudioPrev",
         function()
-            awful.spawn.easy_async("playerctl previous", function(s)
-                beautiful.currently_playing.update()
-            end)
+            awful.spawn("playerctl previous")
         end,
         { description = "rewind to previous media", group = "media" }
     )
