@@ -1,5 +1,3 @@
--- access update function by doing
--- `beautiful.<widget>.update()`
 local create = function(bg, shape, margin)
     local currently_playing = require("base_widgets.current_audio_widget")({
         settings = function()
@@ -31,9 +29,6 @@ local create = function(bg, shape, margin)
         shape,
         margin
     )
-
-    -- easy way to access update function for when we do keybinds
-    widget.update = currently_playing.update
 
     return widget
 end

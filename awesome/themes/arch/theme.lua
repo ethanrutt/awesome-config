@@ -106,12 +106,6 @@ theme.currently_playing = require("widgets.currently_playing")(
     theme.margin_size
 )
 
-theme.currently_playingv2 = require("widgets.currently_playingv2")(
-    theme.default_bg,
-    gears.shape.rectangle,
-    theme.margin_size
-)
-
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end)
 )
@@ -153,7 +147,7 @@ function theme.at_screen_connect(s)
             theme.eth,
             theme.wifi,
             theme.soundbar_widget,
-            theme.currently_playingv2,
+            theme.currently_playing,
             theme.systray,
         }
     })

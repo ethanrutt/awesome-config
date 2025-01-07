@@ -1,31 +1,23 @@
---[[
+local awful = require("awful")
+local wibox = require("wibox")
 
-    Base took from lain awesomewm widgets
-    https://github.com/lcpz/lain/
+-- for some reason the with_line_callback doesn't like whitespace, so we can't
+-- have any whitespace before the song title. This is weird though because it
+-- still allows it in the song title, this is why the pipes are there between the fields. I'm not
+-- sure exactly what's happening but it works like this
 
---]]
-
-local helpers = require("utils.helpers")
-local shell   = require("awful.util").shell
-local wibox   = require("wibox")
-local string  = string
-local type    = type
-
-local function factory(args)
-    args                    = args or {}
-
+local factory = function(args)
+    args = args or {}
     local currently_playing = { widget = args.widget or wibox.widget.textbox() }
-    local timeout           = args.timeout or 5
-    local settings          = args.settings or function() end
+    local settings = args.settings or function() end
 
-    currently_playing.cmd   = "playerctl metadata --format '{{status}} {{playerName}} {{artist}} : {{title}}'"
-
-    function currently_playing.update()
-        helpers.async({ shell, "-c", currently_playing.cmd },
-            function(s)
-                cp_metadata = {}
+    awful.spawn.with_line_callback(
+        "playerctl metadata --follow --format {{status}}|{{playerName}}|{{artist}}:{{trunc(title,30)}}|",
+        {
+            stdout = function(s)
                 local words = {}
-                for word in s:gmatch("%S+") do
+                cp_metadata = {}
+                for word in s:gmatch("([^|]*)|") do
                     table.insert(words, word)
                 end
 
@@ -50,10 +42,9 @@ local function factory(args)
                 widget = currently_playing.widget
 
                 settings()
-            end)
-    end
-
-    helpers.newtimer("currently_playing", timeout, currently_playing.update)
+            end
+        }
+    )
 
     return currently_playing
 end
