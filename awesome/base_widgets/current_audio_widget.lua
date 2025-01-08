@@ -11,6 +11,8 @@ local factory = function(args)
     local currently_playing = { widget = args.widget or wibox.widget.textbox() }
     local settings = args.settings or function() end
 
+    -- when reloading this lingers, see conf/signals to see how to kill this on
+    -- restart
     awful.spawn.with_line_callback(
         "playerctl metadata --follow --format {{status}}|{{playerName}}|{{artist}}:{{title}}|",
         {

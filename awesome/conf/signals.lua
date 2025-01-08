@@ -34,4 +34,12 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+awesome.connect_signal("exit", function(reason_restart)
+  -- playerctl lingers so we have to kill it whenever we restart to not have
+  -- dead children processes whenever the next loads currently_playing widget
+  -- loads
+  -- see base_widgets/current_audio_widget
+  awful.spawn("pkill playerctl")
+end)
 -- }}}
