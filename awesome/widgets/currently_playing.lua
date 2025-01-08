@@ -1,4 +1,4 @@
-local create = function(bg, shape, margin)
+local create = function(bg, shape, margin, forced_width)
     local currently_playing = require("base_widgets.current_audio_widget")({
         settings = function()
             local status = ""
@@ -29,6 +29,8 @@ local create = function(bg, shape, margin)
         shape,
         margin
     )
+
+    widget.forced_width = forced_width
 
     return widget
 end

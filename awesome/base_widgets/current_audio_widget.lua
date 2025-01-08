@@ -12,7 +12,7 @@ local factory = function(args)
     local settings = args.settings or function() end
 
     awful.spawn.with_line_callback(
-        "playerctl metadata --follow --format {{status}}|{{playerName}}|{{artist}}:{{trunc(title,30)}}|",
+        "playerctl metadata --follow --format {{status}}|{{playerName}}|{{artist}}:{{title}}|",
         {
             stdout = function(s)
                 local words = {}

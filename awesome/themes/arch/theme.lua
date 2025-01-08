@@ -103,7 +103,8 @@ theme.systray = utils.create_margin_widget(wibox.widget.systray(), theme.margin_
 theme.currently_playing = require("widgets.currently_playing")(
     theme.default_bg,
     gears.shape.rectangle,
-    theme.margin_size
+    theme.margin_size,
+    250
 )
 
 local taglist_buttons = gears.table.join(
