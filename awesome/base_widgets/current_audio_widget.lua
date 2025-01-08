@@ -34,7 +34,7 @@ local factory = function(args)
                 end
 
                 if words[3] and words[3] ~= ":" then
-                    cp_metadata.artist_and_track = table.concat(words, " ", 3):gsub("%%", "")
+                    cp_metadata.artist_and_track = table.concat(words, " ", 3):gsub("%%", ""):gsub(":", " : ")
                 else
                     cp_metadata.artist_and_track = ""
                 end

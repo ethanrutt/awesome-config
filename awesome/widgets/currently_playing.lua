@@ -3,23 +3,23 @@ local create = function(bg, shape, margin, forced_width)
         settings = function()
             local status = ""
             if cp_metadata.status == "Playing" then
-                status = "  "
+                status = " "
             else
-                status = "  "
+                status = " "
             end
 
             local player = ""
             if cp_metadata.player == "firefox" then
-                player = "   "
+                player = " "
             elseif cp_metadata.player == "spotify" then
-                player = "    "
+                player = " "
             elseif cp_metadata.player == "vlc" then
-                player = " 󰕼  "
+                player = "󰕼 "
             else
-                player = "   "
+                player = " "
             end
 
-            widget.text = status .. player .. cp_metadata.artist_and_track
+            widget.text = " " .. status .. " | " .. player .. " | " .. cp_metadata.artist_and_track .. " "
         end
     })
 
