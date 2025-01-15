@@ -31,8 +31,8 @@ local function factory(args)
     local settings   = args.settings or function() end
 
     -- Compatibility with old API where iface was a string corresponding to 1 interface
-    net.iface = (args.iface and (type(args.iface) == "string" and {args.iface}) or
-                (type(args.iface) == "table" and args.iface)) or {}
+    net.iface        = (args.iface and (type(args.iface) == "string" and { args.iface }) or
+        (type(args.iface) == "table" and args.iface)) or {}
 
     function net.get_devices()
         net.iface = {} -- reset at every call
@@ -52,11 +52,14 @@ local function factory(args)
             received = 0
         }
 
+
         for _, dev in ipairs(net.iface) do
             local dev_now    = {}
             local dev_before = net.devices[dev] or { last_t = 0, last_r = 0 }
-            local now_t      = tonumber(helpers.first_line(string.format("/sys/class/net/%s/statistics/tx_bytes", dev)) or 0)
-            local now_r      = tonumber(helpers.first_line(string.format("/sys/class/net/%s/statistics/rx_bytes", dev)) or 0)
+            local now_t      = tonumber(helpers.first_line(string.format("/sys/class/net/%s/statistics/tx_bytes", dev)) or
+                0)
+            local now_r      = tonumber(helpers.first_line(string.format("/sys/class/net/%s/statistics/rx_bytes", dev)) or
+                0)
 
             dev_now.carrier  = helpers.first_line(string.format("/sys/class/net/%s/carrier", dev)) or "0"
             dev_now.state    = helpers.first_line(string.format("/sys/class/net/%s/operstate", dev)) or "down"
@@ -74,12 +77,13 @@ local function factory(args)
             dev_now.last_r   = now_r
 
             if wifi_state == "on" and helpers.first_line(string.format("/sys/class/net/%s/uevent", dev)) == "DEVTYPE=wlan" then
-                dev_now.wifi   = true
+                dev_now.wifi = true
                 if string.match(dev_now.carrier, "1") then
-                        dev_now.signal = tonumber(string.match(helpers.lines_from("/proc/net/wireless")[3], "(%-%d+%.)")) or nil
+                    dev_now.signal = tonumber(string.match(helpers.lines_from("/proc/net/wireless")[3], "(%-%d+%.)")) or
+                        nil
                 end
             else
-                dev_now.wifi   = false
+                dev_now.wifi = false
             end
 
             if eth_state == "on" and helpers.first_line(string.format("/sys/class/net/%s/uevent", dev)) ~= "DEVTYPE=wlan" then
@@ -93,10 +97,10 @@ local function factory(args)
             -- Notify only once when connection is lost
             if string.match(dev_now.carrier, "0") and notify == "on" and helpers.get_map(dev) then
                 naughty.notify {
-                    title    = dev,
-                    text     = "No carrier",
-                    icon     = helpers.icons_dir .. "no_net.png",
-                    screen   = screen
+                    title  = dev,
+                    text   = "No carrier",
+                    icon   = helpers.icons_dir .. "no_net.png",
+                    screen = screen
                 }
                 helpers.set_map(dev, false)
             elseif string.match(dev_now.carrier, "1") then
@@ -123,4 +127,3 @@ local function factory(args)
 end
 
 return factory
-

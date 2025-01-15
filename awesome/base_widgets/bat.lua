@@ -36,13 +36,13 @@ local function factory(args)
     local notify      = args.notify or "on"
     local full_notify = args.full_notify or notify
     local n_perc      = args.n_perc or { 5, 15 }
-    local batteries   = args.batteries or (args.battery and {args.battery}) or {}
+    local batteries   = args.batteries or (args.battery and { args.battery }) or {}
     local ac          = args.ac or "AC0"
     local settings    = args.settings or function() end
 
     function bat.get_batteries()
         helpers.line_callback("ls -1 " .. pspath, function(line)
-            local bstr =  string.match(line, "BAT%w+")
+            local bstr = string.match(line, "BAT%w+")
             if bstr then
                 batteries[#batteries + 1] = bstr
             else
@@ -61,7 +61,7 @@ local function factory(args)
         bg      = "#FFFFFF"
     }
 
-    bat_notification_low_preset = {
+    bat_notification_low_preset      = {
         title   = "Battery low",
         text    = "Plug the cable!",
         timeout = 15,
@@ -69,7 +69,7 @@ local function factory(args)
         bg      = "#CDCDCD"
     }
 
-    bat_notification_charged_preset = {
+    bat_notification_charged_preset  = {
         title   = "Battery full",
         text    = "You can unplug the cable",
         timeout = 15,
@@ -77,7 +77,7 @@ local function factory(args)
         bg      = "#CDCDCD"
     }
 
-    bat_now = {
+    bat_now                          = {
         status    = "N/A",
         ac_status = "N/A",
         perc      = "N/A",
@@ -86,9 +86,9 @@ local function factory(args)
         capacity  = "N/A"
     }
 
-    bat_now.n_status   = {}
-    bat_now.n_perc     = {}
-    bat_now.n_capacity = {}
+    bat_now.n_status                 = {}
+    bat_now.n_perc                   = {}
+    bat_now.n_capacity               = {}
     for i = 1, #batteries do
         bat_now.n_status[i] = "N/A"
         bat_now.n_perc[i] = 0
@@ -115,25 +115,25 @@ local function factory(args)
 
             if tonumber(present) == 1 then
                 -- current_now(I)[uA], voltage_now(U)[uV], power_now(P)[uW]
-                local rate_current = tonumber(helpers.first_line(bstr .. "/current_now"))
-                local rate_voltage = tonumber(helpers.first_line(bstr .. "/voltage_now"))
-                local rate_power   = tonumber(helpers.first_line(bstr .. "/power_now"))
-                local charge_full  = tonumber(helpers.first_line(bstr .. "/charge_full"))
-                local charge_design = tonumber(helpers.first_line(bstr .. "/charge_full_design"))
+                local rate_current      = tonumber(helpers.first_line(bstr .. "/current_now"))
+                local rate_voltage      = tonumber(helpers.first_line(bstr .. "/voltage_now"))
+                local rate_power        = tonumber(helpers.first_line(bstr .. "/power_now"))
+                local charge_full       = tonumber(helpers.first_line(bstr .. "/charge_full"))
+                local charge_design     = tonumber(helpers.first_line(bstr .. "/charge_full_design"))
 
                 -- energy_now(P)[uWh], charge_now(I)[uAh]
-                local energy_now = tonumber(helpers.first_line(bstr .. "/energy_now") or
-                                   helpers.first_line(bstr .. "/charge_now"))
+                local energy_now        = tonumber(helpers.first_line(bstr .. "/energy_now") or
+                    helpers.first_line(bstr .. "/charge_now"))
 
                 -- energy_full(P)[uWh], charge_full(I)[uAh]
-                local energy_full = tonumber(helpers.first_line(bstr .. "/energy_full") or
-                                    charge_full)
+                local energy_full       = tonumber(helpers.first_line(bstr .. "/energy_full") or
+                    charge_full)
 
                 local energy_percentage = tonumber(helpers.first_line(bstr .. "/capacity")) or
-                                          math.floor((energy_now / energy_full) * 100)
+                    math.floor((energy_now / energy_full) * 100)
 
-                bat_now.n_status[i] = helpers.first_line(bstr .. "/status") or "N/A"
-                bat_now.n_perc[i]   = energy_percentage or bat_now.n_perc[i]
+                bat_now.n_status[i]     = helpers.first_line(bstr .. "/status") or "N/A"
+                bat_now.n_perc[i]       = energy_percentage or bat_now.n_perc[i]
 
                 if not charge_design or charge_design == 0 then
                     bat_now.n_capacity[i] = 0
@@ -159,7 +159,7 @@ local function factory(args)
         -- one or more of the batteries may be full, but only one battery
         -- discharging suffices to set global status to "Discharging".
         bat_now.status = bat_now.n_status[1] or "N/A"
-        for _,status in ipairs(bat_now.n_status) do
+        for _, status in ipairs(bat_now.n_status) do
             if status == "Discharging" or status == "Charging" then
                 bat_now.status = status
             end
@@ -168,11 +168,11 @@ local function factory(args)
 
         if bat_now.status ~= "N/A" then
             if bat_now.status ~= "Full" and sum_rate_power == 0 and bat_now.ac_status == 1 then
-                bat_now.perc  = math.floor(math.min(100, (sum_energy_now / sum_energy_full) * 100))
-                bat_now.time  = "00:00"
-                bat_now.watt  = 0
+                bat_now.perc = math.floor(math.min(100, (sum_energy_now / sum_energy_full) * 100))
+                bat_now.time = "00:00"
+                bat_now.watt = 0
 
-            -- update {perc,time,watt} iff battery not full and rate > 0
+                -- update {perc,time,watt} iff battery not full and rate > 0
             elseif bat_now.status ~= "Full" then
                 local rate_time = 0
                 -- Calculate time and watt if rates are greater then 0
@@ -187,9 +187,9 @@ local function factory(args)
 
                     if 0 < rate_time and rate_time < 0.01 then -- check for magnitude discrepancies (#199)
                         rate_time_magnitude = math.abs(math.floor(math.log10(rate_time)))
-                        rate_time = rate_time * 10^(rate_time_magnitude - 2)
+                        rate_time = rate_time * 10 ^ (rate_time_magnitude - 2)
                     end
-                 end
+                end
 
                 local hours   = math.floor(rate_time)
                 local minutes = math.floor((rate_time - hours) * 60)
@@ -197,9 +197,9 @@ local function factory(args)
                 bat_now.time  = string.format("%02d:%02d", hours, minutes)
                 bat_now.watt  = tonumber(string.format("%.2f", sum_rate_energy / 1e6))
             elseif bat_now.status == "Full" then
-                bat_now.perc  = 100
-                bat_now.time  = "00:00"
-                bat_now.watt  = 0
+                bat_now.perc = 100
+                bat_now.time = "00:00"
+                bat_now.watt = 0
             end
         end
 
@@ -237,4 +237,3 @@ local function factory(args)
 end
 
 return factory
-

@@ -12,9 +12,9 @@ local create = function(bg, shape, margin)
         wifi_state = "on",
         eth_state = "on",
         settings = function()
-            local eth0 = net_now.devices.eth0
-            if eth0 then
-                if eth0.ethernet then
+            local eth = net_now.devices.eth0 or net_now.devices.enp8s0 or nil
+            if eth then
+                if eth.ethernet then
                     eth_icon.text = " 󰈁 "
                     eth_icon.visible = true
                 else

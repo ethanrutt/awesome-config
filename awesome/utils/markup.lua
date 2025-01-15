@@ -18,13 +18,19 @@ local setmetatable = setmetatable
 local markup = { fg = {}, bg = {} }
 
 -- Convenience tags
-function markup.bold(text)      return format("<b>%s</b>",         text) end
-function markup.italic(text)    return format("<i>%s</i>",         text) end
-function markup.strike(text)    return format("<s>%s</s>",         text) end
-function markup.underline(text) return format("<u>%s</u>",         text) end
-function markup.monospace(text) return format("<tt>%s</tt>",       text) end
-function markup.big(text)       return format("<big>%s</big>",     text) end
-function markup.small(text)     return format("<small>%s</small>", text) end
+function markup.bold(text) return format("<b>%s</b>", text) end
+
+function markup.italic(text) return format("<i>%s</i>", text) end
+
+function markup.strike(text) return format("<s>%s</s>", text) end
+
+function markup.underline(text) return format("<u>%s</u>", text) end
+
+function markup.monospace(text) return format("<tt>%s</tt>", text) end
+
+function markup.big(text) return format("<big>%s</big>", text) end
+
+function markup.small(text) return format("<small>%s</small>", text) end
 
 -- Set the font
 function markup.font(font, text)
@@ -67,4 +73,3 @@ setmetatable(markup.bg, { __call = function(_, ...) return markup.bg.color(...) 
 
 -- link markup(...) calls to markup.fg.color(...)
 return setmetatable(markup, { __call = function(_, ...) return markup.fg.color(...) end })
-

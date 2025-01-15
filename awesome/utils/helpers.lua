@@ -8,21 +8,23 @@
 
 --]]
 
-local spawn  = require("awful.spawn")
-local timer  = require("gears.timer")
-local debug  = require("debug")
-local io     = { lines = io.lines,
-                 open  = io.open }
-local pairs  = pairs
-local rawget = rawget
-local tsort  = table.sort
-local unpack = unpack or table.unpack -- lua 5.1 retro-compatibility
+local spawn         = require("awful.spawn")
+local timer         = require("gears.timer")
+local debug         = require("debug")
+local io            = {
+    lines = io.lines,
+    open  = io.open
+}
+local pairs         = pairs
+local rawget        = rawget
+local tsort         = table.sort
+local unpack        = unpack or table.unpack -- lua 5.1 retro-compatibility
 
 -- Lain helper functions for internal use
 -- lain.helpers
-local helpers = {}
+local helpers       = {}
 
-helpers.lain_dir    = debug.getinfo(1, 'S').source:match[[^@(.*/).*$]]
+helpers.lain_dir    = debug.getinfo(1, 'S').source:match [[^@(.*/).*$]]
 helpers.icons_dir   = helpers.lain_dir .. 'icons/'
 helpers.scripts_dir = helpers.lain_dir .. 'scripts/'
 
@@ -111,23 +113,23 @@ end
 -- @return cmd PID
 function helpers.async(cmd, callback)
     return spawn.easy_async(cmd,
-    function (stdout, _, _, exit_code)
-        callback(stdout, exit_code)
-    end)
+        function(stdout, _, _, exit_code)
+            callback(stdout, exit_code)
+        end)
 end
 
 -- like above, but call spawn.easy_async with a shell
 function helpers.async_with_shell(cmd, callback)
     return spawn.easy_async_with_shell(cmd,
-    function (stdout, _, _, exit_code)
-        callback(stdout, exit_code)
-    end)
+        function(stdout, _, _, exit_code)
+            callback(stdout, exit_code)
+        end)
 end
 
 -- run a command and execute a function on its output line by line
 function helpers.line_callback(cmd, callback)
     return spawn.with_line_callback(cmd, {
-        stdout = function (line)
+        stdout = function(line)
             callback(line)
         end,
     })
@@ -165,7 +167,7 @@ end
 function helpers.spairs(t)
     -- collect the keys
     local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
+    for k in pairs(t) do keys[#keys + 1] = k end
 
     tsort(keys)
 
@@ -183,8 +185,8 @@ end
 -- example: the trivial partition set of {a, b, c}, is {{a}, {b}, {c}}
 function helpers.trivial_partition_set(set)
     local ss = {}
-    for _,e in pairs(set) do
-        ss[#ss+1] = {e}
+    for _, e in pairs(set) do
+        ss[#ss + 1] = { e }
     end
     return ss
 end
@@ -192,10 +194,10 @@ end
 -- create the powerset of a given set
 function helpers.powerset(s)
     if not s then return {} end
-    local t = {{}}
+    local t = { {} }
     for i = 1, #s do
         for j = 1, #t do
-            t[#t+1] = {s[i],unpack(t[j])}
+            t[#t + 1] = { s[i], unpack(t[j]) }
         end
     end
     return t
@@ -204,4 +206,3 @@ end
 -- }}}
 
 return helpers
-
