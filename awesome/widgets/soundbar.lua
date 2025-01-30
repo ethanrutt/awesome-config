@@ -11,7 +11,7 @@ local create = function(bg, selected_bg, shape, margin, font)
             local number_string = string.gsub(volume_now.left, "%%", "")
             local vol = tonumber(number_string)
 
-            if volume_now.muted == "yes" then
+            if volume_now.muted == "yes" or vol == nil then
                 vlevel = "  "
             elseif vol < 50 then
                 vlevel = "  "
@@ -20,7 +20,6 @@ local create = function(bg, selected_bg, shape, margin, font)
             end
 
             vlevel = vlevel .. " | " .. volume_now.left .. " % "
-            -- widget:set_markup(require("utils.markup")(bg, vlevel))
             widget.text = vlevel
         end
     })
