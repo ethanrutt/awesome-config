@@ -176,6 +176,12 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { altmod, },
+        "4",
+        function() awful.spawn("obsidian") end,
+        { description = "start obsidian", group = "launcher" }
+    ),
+    awful.key(
+        { altmod, },
         "5",
         function() awful.spawn("discord") end,
         { description = "start discord", group = "launcher" }
@@ -185,6 +191,12 @@ globalkeys = gears.table.join(
         "6",
         function() awful.spawn("spotify-launcher") end,
         { description = "start spotify", group = "launcher" }
+    ),
+    awful.key(
+        { altmod, },
+        "e",
+        function() awful.spawn("thunar") end,
+        { description = "start thunar", group = "launcher" }
     ),
 
     -- media

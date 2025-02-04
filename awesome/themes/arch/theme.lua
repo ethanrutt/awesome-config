@@ -47,8 +47,8 @@ theme.taglist_bg_focus = arch_blue
 theme.taglist_bg_urgent = purple
 theme.taglist_bg_empty = white
 theme.taglist_bg_occupied = white
-theme.taglist_spacing = 2
-theme.taglist_shape = gears.shape.circle
+theme.taglist_spacing = 4
+theme.taglist_shape = gears.shape.rounded_rect
 
 theme.margin_size = 4
 

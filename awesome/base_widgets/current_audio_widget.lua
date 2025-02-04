@@ -3,8 +3,8 @@ local wibox = require("wibox")
 
 -- for some reason the with_line_callback doesn't like whitespace, so we can't
 -- have any whitespace before the song title. This is weird though because it
--- still allows it in the song title, this is why the pipes are there between the fields. I'm not
--- sure exactly what's happening but it works like this
+-- still allows it in the song title, this is why the pipes are there between
+-- the fields. I'm not sure exactly what's happening but it works like this
 
 local factory = function(args)
     args = args or {}
