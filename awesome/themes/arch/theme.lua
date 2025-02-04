@@ -146,9 +146,9 @@ function theme.at_screen_connect(s)
             theme.space,
             theme.currently_playing,
             theme.space,
-            theme.network,
-            theme.space,
             theme.systray,
+            theme.space,
+            theme.network,
             theme.space,
             theme.textclock,
         }

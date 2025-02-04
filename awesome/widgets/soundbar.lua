@@ -11,16 +11,16 @@ local create = function(bg, selected_bg, shape, margin, font)
             local vol = tonumber(number_string)
 
             if volume_now.muted == "yes" or vol == nil then
-                vlevel = "  "
+                vlevel = "   "
             elseif vol < 33 then
-                vlevel = "  "
+                vlevel = "   "
             elseif vol < 66 then
-                vlevel = "  "
+                vlevel = "   "
             else
-                vlevel = "  "
+                vlevel = "   "
             end
 
-            widget.text = vlevel
+            widget.text = vlevel .. number_string .. "% "
         end
     })
     soundbar.widget.font = font
