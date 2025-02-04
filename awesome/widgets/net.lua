@@ -15,8 +15,10 @@ local create = function(bg, shape, margin)
             local eth = net_now.devices.eth0 or net_now.devices.enp8s0 or nil
             if eth then
                 if eth.ethernet then
-                    eth_icon.text = " 󰈁 "
+                    eth_icon.text = "   "
                     eth_icon.visible = true
+                    wifi_icon.visible = false
+                    return
                 else
                     eth_icon.visible = false
                 end
