@@ -32,8 +32,8 @@ theme.fg_focus = white
 theme.fg_urgent = white
 theme.fg_minimize = white
 
-theme.useless_gap = 5
-theme.border_width = dpi(3)
+theme.useless_gap = 7
+theme.border_width = dpi(2)
 theme.border_focus = mint_green
 theme.border_normal = purple
 theme.border_marked = purple
@@ -70,7 +70,7 @@ tc.align = "center"
 theme.textclock = utils.create_widget(
     tc,
     theme.default_bg,
-    gears.shape.rounded_bar,
+    gears.shape.rectangle,
     theme.margin_size
 )
 
@@ -139,16 +139,14 @@ function theme.at_screen_connect(s)
         },
         {
             layout = wibox.layout.flex.horizontal,
-            theme.space,
-            theme.textclock,
-            theme.space,
         },
         {
             layout = wibox.layout.fixed.horizontal,
-            theme.eth,
             theme.wifi,
+            theme.eth,
             theme.soundbar_widget,
             theme.currently_playing,
+            theme.textclock,
             theme.systray,
         }
     })
