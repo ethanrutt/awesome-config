@@ -1,5 +1,4 @@
 local awful = require("awful")
-local wibox = require("wibox")
 local utils = require("utils.widget_utils")
 
 -- access update function by doing
@@ -13,13 +12,14 @@ local create = function(bg, selected_bg, shape, margin, font)
 
             if volume_now.muted == "yes" or vol == nil then
                 vlevel = "  "
-            elseif vol < 50 then
+            elseif vol < 33 then
+                vlevel = "  "
+            elseif vol < 66 then
                 vlevel = "  "
             else
                 vlevel = "  "
             end
 
-            vlevel = vlevel .. " | " .. volume_now.left .. " % "
             widget.text = vlevel
         end
     })

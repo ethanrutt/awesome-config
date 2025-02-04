@@ -3,6 +3,7 @@ local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
+local markup = require("utils.markup")
 
 local arch_blue = "#1793d0"
 local mint_green = "#daffed"
@@ -13,21 +14,21 @@ local white = "#dddddd"
 
 local theme = {}
 
-theme.default_bg = white
+theme.default_bg = black
 theme.selected_bg = arch_blue
 theme.large_widget_bg = white
 
-theme.font = "AgaveNerdFont 10"
+theme.font = "HackGen 10"
 
-theme.bg_normal = white
+theme.bg_normal = black
 theme.bg_focus = arch_blue
 theme.bg_subtle = mint_green
 theme.bg_urgent = purple
 theme.bg_minimize = arch_blue
 theme.bg_dark = arch_blue
-theme.bg_systray = arch_blue
+theme.bg_systray = black
 
-theme.fg_normal = black
+theme.fg_normal = white
 theme.fg_focus = white
 theme.fg_urgent = white
 theme.fg_minimize = white
@@ -42,13 +43,14 @@ theme.wibar_bg = black
 
 theme.taglist_font = "AgaveNerdFont 10"
 theme.taglist_fg_focus = white
-theme.taglist_fg_normal = black
+theme.taglist_fg_empty = white
+theme.taglist_fg_occupied = white
 theme.taglist_bg_focus = arch_blue
 theme.taglist_bg_urgent = purple
-theme.taglist_bg_empty = white
-theme.taglist_bg_occupied = white
-theme.taglist_spacing = 4
-theme.taglist_shape = gears.shape.rounded_rect
+theme.taglist_bg_empty = black
+theme.taglist_bg_occupied = black
+theme.taglist_spacing = 2
+theme.taglist_shape = gears.shape.arc
 
 theme.margin_size = 4
 
@@ -57,13 +59,13 @@ theme.menu_width = dpi(130)
 
 theme.widget_spacing = dpi(200)
 
-theme.space = wibox.widget {
-    spacing        = theme.widget_spacing,
-    spacing_widget = wibox.widget.separator,
-    layout         = wibox.layout.fixed.horizontal
-}
+theme.space = wibox.widget({
+    widget = wibox.widget.textbox,
+    font = theme.font,
+})
+theme.space:set_markup(markup.color(arch_blue, black, " 󱋱 "))
 
-local tc = wibox.widget.textclock("   %a %b %d   %I:%M %p ")
+local tc = wibox.widget.textclock("  %a %b %d   %I:%M %p ")
 tc.font = theme.font
 tc.valign = "center"
 tc.align = "center"
@@ -88,13 +90,11 @@ theme.soundbar_widget = require("widgets.soundbar")(
     theme.font
 )
 
-local wifi_and_eth = require("widgets.net")(
+theme.network = require("widgets.net")(
     theme.default_bg,
     gears.shape.rectangle,
     theme.margin_size
 )
-theme.eth = wifi_and_eth.eth
-theme.wifi = wifi_and_eth.wifi
 
 -- systray shape is unable to be changed with the background widget, the
 -- background is set in theme.bg_systray
@@ -104,7 +104,7 @@ theme.currently_playing = require("widgets.currently_playing")(
     theme.default_bg,
     gears.shape.rectangle,
     theme.margin_size,
-    250
+    theme.font
 )
 
 local taglist_buttons = gears.table.join(
@@ -142,12 +142,15 @@ function theme.at_screen_connect(s)
         },
         {
             layout = wibox.layout.fixed.horizontal,
-            theme.wifi,
-            theme.eth,
             theme.soundbar_widget,
+            theme.space,
             theme.currently_playing,
-            theme.textclock,
+            theme.space,
+            theme.network,
+            theme.space,
             theme.systray,
+            theme.space,
+            theme.textclock,
         }
     })
 end
