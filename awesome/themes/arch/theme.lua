@@ -41,7 +41,7 @@ theme.border_marked = purple
 
 theme.wibar_bg = black
 
-theme.taglist_font = "AgaveNerdFont 10"
+theme.taglist_font = "HackGen 10"
 theme.taglist_fg_focus = white
 theme.taglist_fg_empty = white
 theme.taglist_fg_occupied = white
@@ -65,7 +65,7 @@ theme.space = wibox.widget({
 })
 theme.space:set_markup(markup.color(arch_blue, black, " 󱋱 "))
 
-local tc = wibox.widget.textclock("  %a %b %d   %I:%M %p ")
+local tc = wibox.widget.textclock("%a %b %d %I:%M %p ")
 tc.font = theme.font
 tc.valign = "center"
 tc.align = "center"
