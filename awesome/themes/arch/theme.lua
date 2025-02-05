@@ -63,9 +63,9 @@ theme.space = wibox.widget({
     widget = wibox.widget.textbox,
     font = theme.font,
 })
-theme.space:set_markup(markup.color(arch_blue, black, " 󱋱 "))
+theme.space:set_markup(markup.color(arch_blue, black, "󱋱"))
 
-local tc = wibox.widget.textclock("%a %b %d %I:%M %p ")
+local tc = wibox.widget.textclock(" %a %b %d %I:%M %p ")
 tc.font = theme.font
 tc.valign = "center"
 tc.align = "center"

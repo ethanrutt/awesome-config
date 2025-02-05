@@ -19,7 +19,7 @@ local create = function(bg, shape, margin, font)
                 player = " "
             end
 
-            widget.text = status .. " " .. player .. " " .. cp_metadata.artist_and_track
+            widget.text = " " .. status .. " " .. player .. " " .. cp_metadata.artist_and_track .. " "
         end
     })
 
