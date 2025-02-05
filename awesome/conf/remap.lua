@@ -90,6 +90,38 @@ globalkeys = gears.table.join(
         awful.client.urgent.jumpto,
         { description = "jump to urgent client", group = "client" }
     ),
+    awful.key(
+        { modkey, },
+        "=",
+        function()
+            awful.tag.incmwfact(0.01)
+        end,
+        { description = "grow window in tiling direction", group = "layout" }
+    ),
+    awful.key(
+        { modkey, },
+        "-",
+        function()
+            awful.tag.incmwfact(-0.01)
+        end,
+        { description = "shrink window in tiling direction", group = "layout" }
+    ),
+    awful.key(
+        { altmod, },
+        "=",
+        function()
+            awful.client.incwfact(0.05)
+        end,
+        { description = "grow window perpendicular to tiling direction", group = "layout" }
+    ),
+    awful.key(
+        { altmod, },
+        "-",
+        function()
+            awful.client.incwfact(-0.05)
+        end,
+        { description = "shrink window perpendicular to tiling direction", group = "layout" }
+    ),
 
     -- Standard program
     awful.key(
@@ -121,6 +153,11 @@ globalkeys = gears.table.join(
         function() awful.spawn("rofi -show drun") end,
         { description = "run prompt for desktop apps", group = "launcher" }
     ),
+    awful.key({ altmod, },
+        "space",
+        function() awful.spawn("rofi -show drun") end,
+        { description = "run prompt for desktop apps", group = "launcher" }
+    ),
     awful.key(
         { modkey, },
         "Tab",
@@ -131,7 +168,8 @@ globalkeys = gears.table.join(
         { altmod, "Shift" },
         "s",
         function()
-            awful.spawn.with_shell("shotgun")
+            require("naughty").notify({ title = "Shotgun", text = "Taking Screenshot" })
+            awful.spawn("shotgun")
         end,
         { description = "take a screen shot with shotgun", group = "launcher" }
     ),

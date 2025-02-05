@@ -59,6 +59,9 @@ theme.menu_width = dpi(130)
 
 theme.widget_spacing = dpi(200)
 
+theme.notification_max_height = 100
+theme.notification_icon_size = 50
+
 theme.space = wibox.widget({
     widget = wibox.widget.textbox,
     font = theme.font,
