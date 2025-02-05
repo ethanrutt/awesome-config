@@ -48,7 +48,7 @@ theme.taglist_fg_occupied = white
 theme.taglist_bg_focus = arch_blue
 theme.taglist_bg_urgent = purple
 theme.taglist_bg_empty = black
-theme.taglist_bg_occupied = black
+theme.taglist_bg_occupied = white
 theme.taglist_spacing = 2
 theme.taglist_shape = gears.shape.arc
 
@@ -67,8 +67,6 @@ theme.space:set_markup(markup.color(arch_blue, black, "󱋱"))
 
 local tc = wibox.widget.textclock(" %a %b %d %I:%M %p ")
 tc.font = theme.font
-tc.valign = "center"
-tc.align = "center"
 theme.textclock = utils.create_widget(
     tc,
     theme.default_bg,
