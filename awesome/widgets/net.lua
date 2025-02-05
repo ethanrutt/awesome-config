@@ -12,7 +12,7 @@ local create = function(bg, shape, margin)
             local eth = net_now.devices.eth0 or net_now.devices.enp8s0 or nil
             if eth then
                 if eth.ethernet then
-                    network_icon.text = "   "
+                    network_icon.text = " 󰛳  "
                     return
                 end
             end
