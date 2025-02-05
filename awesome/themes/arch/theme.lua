@@ -108,6 +108,29 @@ theme.currently_playing = require("widgets.currently_playing")(
     theme.font
 )
 
+-- local popup = awful.popup {
+--     widget = {
+--         {
+--             {
+--                 text   = 'foobar',
+--                 widget = wibox.widget.textbox
+--             },
+--             layout = wibox.layout.fixed.vertical,
+--         },
+--         margins = 10,
+--         widget  = wibox.container.margin
+--     },
+--     ontop = true,
+--     placement    = awful.placement.centered,
+--     shape        = gears.shape.rounded_rect,
+--     visible      = false,
+-- }
+--
+-- local power = wibox.widget.textbox("power button")
+-- power:connect_signal("button::press", function()
+--     popup.visible = true
+-- end)
+
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end)
 )
@@ -152,6 +175,7 @@ function theme.at_screen_connect(s)
             theme.network,
             theme.space,
             theme.textclock,
+            -- power
         }
     })
 end
