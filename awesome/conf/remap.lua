@@ -64,25 +64,25 @@ globalkeys = gears.table.join(
         { modkey, "Shift" },
         "j",
         function() awful.client.swap.byidx(1) end,
-        { description = "swap with next client by index", group = "client" }
+        { description = "swap with next client by index", group = "layout" }
     ),
     awful.key(
         { modkey, "Shift" },
         "k",
         function() awful.client.swap.byidx(-1) end,
-        { description = "swap with previous client by index", group = "client" }
+        { description = "swap with previous client by index", group = "layout" }
     ),
     awful.key(
         { modkey, "Shift" },
         "l",
         function() awful.client.swap.byidx(1) end,
-        { description = "swap with next client by index", group = "client" }
+        { description = "swap with next client by index", group = "layout" }
     ),
     awful.key(
         { modkey, "Shift" },
         "h",
         function() awful.client.swap.byidx(-1) end,
-        { description = "swap with previous client by index", group = "client" }
+        { description = "swap with previous client by index", group = "layout" }
     ),
     awful.key(
         { modkey, },
@@ -105,32 +105,21 @@ globalkeys = gears.table.join(
         { description = "quit awesome", group = "awesome" }
     ),
     awful.key({ modkey, },
-        ">",
-        function() awful.tag.incmwfact(0.05) end,
-        { description = "increase master width factor", group = "layout" }
-    ),
-    awful.key(
-        { modkey, },
-        "<",
-        function() awful.tag.incmwfact(-0.05) end,
-        { description = "decrease master width factor", group = "layout" }
-    ),
-    awful.key({ modkey, },
         "space",
         function() awful.layout.inc(1) end,
-        { description = "select next", group = "layout" }
+        { description = "select next layout", group = "layout" }
     ),
 
     -- Prompt
     awful.key({ modkey, },
         "r",
         function() awful.spawn("rofi -show run") end,
-        { description = "run prompt", group = "launcher" }
+        { description = "run prompt for shell commands", group = "launcher" }
     ),
     awful.key({ altmod, },
         "r",
         function() awful.spawn("rofi -show drun") end,
-        { description = "run prompt", group = "launcher" }
+        { description = "run prompt for desktop apps", group = "launcher" }
     ),
     awful.key(
         { modkey, },
@@ -281,12 +270,6 @@ clientkeys = gears.table.join(
         "space",
         awful.client.floating.toggle,
         { description = "toggle floating", group = "client" }
-    ),
-    awful.key(
-        { modkey, },
-        "t",
-        function(c) c.ontop = not c.ontop end,
-        { description = "toggle keep on top", group = "client" }
     ),
     awful.key({ modkey, },
         "n",
