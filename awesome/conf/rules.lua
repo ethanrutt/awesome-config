@@ -1,7 +1,9 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 
--- {{{ Rules
+local screen_width = awful.screen.focused().geometry.width
+local screen_height = awful.screen.focused().geometry.height
+
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -29,45 +31,41 @@ awful.rules.rules = {
             },
             class = {
                 "Arandr",
-                "Blueman-manager",
                 "Gpick",
                 "Kruler",
                 "MessageWin",  -- kalarm.
                 "Sxiv",
-                "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
+                "Tor Browser", -- fixed size to avoid fingerprinting by size.
                 "Wpa_gui",
                 "veromix",
                 "xtightvncviewer"
             },
 
-            -- Note that the name property shown in xprop might be set slightly after creation of the client
-            -- and the name shown there might not match defined rules here.
+            -- Note that the name property shown in xprop might be set slightly
+            -- after creation of the client and the name shown there might not
+            -- match defined rules here.
             name = {
                 "Event Tester", -- xev.
             },
             role = {
-                "AlarmWindow",   -- Thunderbird's calendar.
-                "ConfigManager", -- Thunderbird's about:config.
-                "pop-up",        -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = { floating = true }
     },
 
-    -- Add titlebars to normal clients and dialogs
+    -- always floating, small, and centered, mainly for audio / bluetooth
+    -- config
     {
         rule_any = {
-            type = { "normal", "dialog" }
+            instance = { "pavucontrol", "blueman", }
         },
-        properties = { titlebars_enabled = true }
-    },
-
-    -- pavucontrol and nm-connection-editor always small at center
-    {
-        rule_any = {
-            instance = { "pavucontrol", "nm-connection-editor" }
-        },
-        properties = { width = 800, height = 700, floating = true, x = 550, y = 200 }
+        properties = {
+            width = screen_width / 2,
+            height = screen_height / 2,
+            floating = true,
+            x = screen_width / 4,
+            y = screen_height / 4
+        }
     }
 }
--- }}}

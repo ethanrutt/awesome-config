@@ -10,13 +10,11 @@ require("awful.hotkeys_popup.keys")
 modkey = "Mod1"
 altmod = "Mod4"
 
--- {{{ Mouse bindings
+-- menu
 root.buttons(gears.table.join(
     awful.button({}, 3, function() mymainmenu:toggle() end)
 ))
--- }}}
 
--- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key(
         { modkey, },
@@ -374,4 +372,3 @@ clientbuttons = gears.table.join(
 
 -- Set keys
 root.keys(globalkeys)
--- }}}
