@@ -54,7 +54,7 @@ local create = function(bg, selected_bg, shape, margin)
     net_bg:connect_signal("mouse::enter", function(c) c:set_bg(selected_bg) end)
     net_bg:connect_signal("mouse::leave", function(c) c:set_bg(bg) end)
 
-    local widget = utils.create_widget(net_bg, margin)
+    local widget = utils.create_margin_widget(net_bg, margin)
 
     -- easy way to access update function for keybinds
     widget.update = net.update
