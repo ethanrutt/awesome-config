@@ -58,7 +58,7 @@ awful.rules.rules = {
     -- config
     {
         rule_any = {
-            instance = { "pavucontrol", "blueman", }
+            instance = { "pavucontrol", "blueman", "nmtui" }
         },
         properties = {
             width = screen_width / 2,
