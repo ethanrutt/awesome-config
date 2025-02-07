@@ -1,7 +1,8 @@
 local wibox = require("wibox")
+local awful = require("awful")
 local utils = require("utils.widget_utils")
 
-local create = function(bg, shape, margin)
+local create = function(bg, selected_bg, shape, margin)
     local network_icon = wibox.widget.textbox()
 
     local net = require("base_widgets.net")({
@@ -37,12 +38,23 @@ local create = function(bg, shape, margin)
         end
     })
 
-    return utils.create_widget(
+    network_icon:buttons(awful.util.table.join(
+        awful.button(
+            {},
+            1,
+            function() awful.spawn(terminal .. " -e nmtui") end
+        )
+    ))
+
+    local net_bg = utils.create_bg_widget(
         network_icon,
         bg,
-        shape,
-        margin
+        shape
     )
+    net_bg:connect_signal("mouse::enter", function(c) c:set_bg(selected_bg) end)
+    net_bg:connect_signal("mouse::leave", function(c) c:set_bg(bg) end)
+
+    return utils.create_widget(net_bg, margin)
 end
 
 return create

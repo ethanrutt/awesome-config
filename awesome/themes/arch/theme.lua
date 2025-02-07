@@ -93,6 +93,7 @@ theme.soundbar_widget = require("widgets.soundbar")(
 
 theme.network = require("widgets.net")(
     theme.default_bg,
+    theme.selected_bg,
     gears.shape.rectangle,
     theme.margin_size
 )
