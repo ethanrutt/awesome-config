@@ -19,7 +19,12 @@ local create = function(bg, shape, margin, font)
                 player = " "
             end
 
-            widget.text = " " .. status .. " " .. player .. " " .. cp_metadata.artist_and_track .. " "
+            local media = "no media playing"
+            if cp_metadata.artist_and_track ~= "" then
+                media = cp_metadata.artist_and_track
+            end
+
+            widget.text = " " .. status .. " " .. player .. " " .. media .. " "
         end
     })
 
