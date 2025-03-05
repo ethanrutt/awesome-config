@@ -176,22 +176,8 @@ globalkeys = gears.table.join(
     awful.key(
         { altmod, },
         "1",
-        function()
-            awful.spawn.with_shell(
-                "firefox --profile ~/.mozilla/firefox/1uleydxc.default-release/"
-            )
-        end,
-        { description = "launch default firefox profile", group = "launcher" }
-    ),
-    awful.key(
-        { altmod, },
-        "2",
-        function()
-            awful.spawn.with_shell(
-                "firefox --profile ~/.mozilla/firefox/0l50ru11.tamu/"
-            )
-        end,
-        { description = "launch tamu firefox profile", group = "launcher" }
+        function() awful.spawn("zen-browser") end,
+        { description = "launch zen browser", group = "launcher" }
     ),
     awful.key(
         { altmod, },
