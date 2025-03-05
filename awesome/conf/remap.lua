@@ -176,8 +176,8 @@ globalkeys = gears.table.join(
     awful.key(
         { altmod, },
         "1",
-        function() awful.spawn("zen-browser") end,
-        { description = "launch zen browser", group = "launcher" }
+        function() awful.spawn("brave") end,
+        { description = "launch brave browser", group = "launcher" }
     ),
     awful.key(
         { altmod, },
