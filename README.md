@@ -25,7 +25,7 @@ These are mainly for keybinds that I have set up that launch or use applications
 - discord
 - firefox
 - spotify
-- kitty
+- alacritty
 - obsidian
 - playerctl
 - pavucontrol
