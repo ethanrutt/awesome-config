@@ -42,7 +42,7 @@ local create = function(bg, selected_bg, shape, margin)
         awful.button(
             {},
             1,
-            function() awful.spawn.with_shell(terminal .. " --class nmtui nmtui") end
+            function() awful.spawn.with_shell(terminal .. " --class nmtui -e nmtui") end
         )
     ))
 
