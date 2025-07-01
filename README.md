@@ -1,5 +1,7 @@
 # ethanrutt awesomewm-config
-apologies for the lame name
+> [!WARNING]
+> This is deprecated, I do not use this WM or configuration anymore
+> I have moved to Hyprland
 
 This is a simple, minimal awesomewm config that gets the job done. It's meant
 to not get in your way and have everything at your fingertips. Using the
